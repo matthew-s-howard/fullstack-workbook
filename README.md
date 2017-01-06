@@ -5,3 +5,4 @@
 ### Starter Repos
 - [Lesson Zero Starter](https://github.com/AustinCodingAcademy/advanced-lesson-zero)
 - [Contact List Starter](https://github.com/AustinCodingAcademy/advanced-contact-list-starter)
+- [Movie List Starter](https://github.com/AustinCodingAcademy/advanced-movie-list-starter)
