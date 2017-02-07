@@ -29,6 +29,18 @@
       "name": "Dana Scully",
       "occupation": "FBI Agent",
       "avatar": "https://pbs.twimg.com/profile_images/718881904834056192/WnMTb__R.jpg"
+    },
+    {
+      "name": "Freddie Jenkins",
+      "avatar": "https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwjdraGts_DRAhXn34MKHfrVAacQjRwIBw&url=http%3A%2F%2Fgrabacristales.com.ar%2F29%2Fgandalf-avatar&psig=AFQjCNEKagyhN3EFHGSg6a0u4my507nIUA&ust=1486090148816178",
+      "occupation": "Friend",
+      "_id": 6
+    },
+    {
+      "name": "Joe Schmo",
+      "avatar": "https://s.candybanana.com/images/f81b/gandalf.jpg",
+      "occupation": "Bank Teller",
+      "_id": 8
     }
   ]
 }

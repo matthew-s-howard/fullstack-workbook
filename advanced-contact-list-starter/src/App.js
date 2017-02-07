@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import ContactList from './ContactList';
+import SelectedContactList from './SelectedContactList';
 import SearchBar from './SearchBar';
-
+import ContactForm from './ContactForm';
+import axios from 'axios';
 /* eslint max-len: [1, {"ignoreUrls": true}] */
 class App extends Component {
 
@@ -10,39 +12,21 @@ class App extends Component {
 
     this.state = {
       searchText: '',
-      contacts: [
-        {
-          _id: 1,
-          name: 'Dale Cooper',
-          occupation: 'FBI Agent',
-          avatar: 'https://upload.wikimedia.org/wikipedia/en/5/50/Agentdalecooper.jpg'
-        },
-        {
-          _id: 2,
-          name: 'Spike Spiegel',
-          occupation: 'Bounty Hunter',
-          avatar: 'http://vignette4.wikia.nocookie.net/deadliestfiction/images/d/de/Spike_Spiegel_by_aleztron.jpg/revision/latest?cb=20130920231337'
-        },
-        {
-          _id: 3,
-          name: 'Wirt',
-          occupation: 'adventurer',
-          avatar: 'http://66.media.tumblr.com/5ea59634756e3d7c162da2ef80655a39/tumblr_nvasf1WvQ61ufbniio1_400.jpg'
-        },
-        {
-          _id: 4,
-          name: 'Michael Myers',
-          occupation: 'Loving little brother',
-          avatar: 'http://vignette2.wikia.nocookie.net/villains/images/e/e3/MMH.jpg/revision/latest?cb=20150810215746'
-        },
-        {
-          _id: 5,
-          name: 'Dana Scully',
-          occupation: 'FBI Agent',
-          avatar: 'https://pbs.twimg.com/profile_images/718881904834056192/WnMTb__R.jpg'
-        }
-      ]
+      contacts: [], // from axios
+      globalContacts: [],
+      selectedContacts: [] // ids only
     };
+  }
+
+  componentDidMount() {
+    axios.get('http://localhost:4000/contacts')
+    .then(resp => {
+      this.setState({
+        contacts: resp.data,
+        globalContacts: resp.data
+      });
+    });
+    // .catch(err => console.log(`Error! ${err}`));
   }
   handleSearchBarChange(event) {
     this.setState({
@@ -51,28 +35,65 @@ class App extends Component {
   }
 
   getFilteredContacts() {
-    const term = this.state.searchText.trim().toLowerCase();
 
-    return this.state.contacts.filter(contact => {
+    const term = this.state.searchText.trim().toLowerCase();
+    return this.state.globalContacts.filter(contact => {
       return contact.name.toLowerCase().indexOf(term) >= 0;
     });
   }
 
-  handleClick(index) {
-    this.setState({
-      contacts: this.state.contacts.filter(contact => contact._id !== index)
-    });
-    // console.log();
+  getSelectedContacts() {
+    return this.state.selectedContacts;
   }
 
+  handleDeleteClick(index) {
+    this.setState({
+      selectedContacts: this.state.selectedContacts.filter(contact => contact._id !== index)
+    });
+  }
+  handleContactClick(index) {
+    this.setState({
+      selectedContacts: this.state.selectedContacts.concat(this.state.globalContacts.filter(contact => contact._id === index)),
+      globalContacts: this.state.globalContacts.filter(contact => contact._id !== index)
+    });
+  // console.log('did we fire?');
+  }
+  handleAddContact(attributes) {
+    axios.post('http://localhost:4000/contacts', attributes)
+      .then(resp => {
+        this.setState({
+          contacts: [...this.state.contacts, resp.data],
+          globalContacts: [...this.state.globalContacts, resp.data]
+        });
+      });
+  //    .catch(err => console.log(err));
+  }
+  handleDeleteButtonClick(_id) {
+    axios.delete(`http://localhost:4000/contacts/${_id}`)
+      .then(resp => {
+        const newContacts = this.state.contacts.filter(contact => contact._id !== _id);
+
+        this.setState({
+          contacts: newContacts
+        });
+      })
+      .catch(err => console.log(`ERROR! ${err}`));
+  }
   render() {
     return (
       <div className="App">
         <h1>Contact List</h1>
         <SearchBar value={this.state.searchText}
           onChange={this.handleSearchBarChange.bind(this)} />
-        <ContactList contacts={this.getFilteredContacts()}
-          onButtonClick={this.handleClick.bind(this)} />
+        <ContactForm onSubmit={this.handleAddContact.bind(this)} />
+        <SelectedContactList
+          selectedContacts={this.getSelectedContacts()}
+          onContactClick={this.handleContactClick.bind(this)}
+          onButtonClick={this.handleDeleteClick.bind(this)}
+          onList={'selected'} />
+        <ContactList globalContacts={this.getFilteredContacts()}
+          onContactClick={this.handleContactClick.bind(this)}
+          onDeleteButtonClick={this.handleDeleteButtonClick.bind(this)} />
       </div>
     );
   }

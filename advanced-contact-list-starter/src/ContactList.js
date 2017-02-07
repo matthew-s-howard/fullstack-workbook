@@ -4,12 +4,14 @@ import Contact from './Contact';
 
 const ContactList = props => {
   return (
-    <ul className="contact-list">
-      {props.contacts.map(contact => {
+    <ul className="contact-list"><h3>Global Contacts</h3>
+      {props.globalContacts.map(contact => {
         return (
           <Contact {...contact}
             key={contact._id}
-            onButtonClick={index => props.onButtonClick(index)}
+            onList={'global'}
+            onContactClick={index => props.onContactClick(index)}
+            onDeleteButtonClick={index => props.onDeleteButtonClick(index)}
             // name={contact.name}
             // avatar={contact.avatar}
             // occupation={contact.occupation}
@@ -23,7 +25,8 @@ const ContactList = props => {
 export default ContactList;
 
 ContactList.propTypes = {
-  contacts: React.PropTypes.array,
-  onButtonClick: React.PropTypes.func.isRequired,
+  globalContacts: React.PropTypes.array,
+  onContactClick: React.PropTypes.func.isRequired,
+  onDeleteButtonClick: React.PropTypes.func.isRequired,
   _id: React.PropTypes.number
 };
