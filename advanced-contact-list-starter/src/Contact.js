@@ -9,7 +9,8 @@ const Contact = props => {
   return (
     <div>
       { list === 'global' ? (
-        <li className="contact" onClick={() => props.onContactClick(props._id)} >
+        <li className="contact"
+          onClick={() => props.onContactClick(props._id)} >
           <div className="image-cropper">
             <img src={props.avatar} alt="avatar" />
           </div>
@@ -22,19 +23,19 @@ const Contact = props => {
               onClick={() => props.onDeleteButtonClick(props._id)} />
           </div>
         </li> ) : (
-        <li className="contact">
-          <div className="image-cropper">
-            <img src={props.avatar} alt="avatar" />
-          </div>
-          <div className="contact-info">
-            <h2>{props.name}</h2>
-            {props.occupation}
-          </div>
-          <div className="button-container">
-            <Button label="Remove from my list" value="delete"
-              onClick={() => props.onButtonClick(props._id)} />
-          </div>
-        </li>
+          <li className="contact">
+            <div className="image-cropper">
+              <img src={props.avatar} alt="avatar" />
+            </div>
+            <div className="contact-info">
+              <h2>{props.name}</h2>
+              {props.occupation}
+            </div>
+            <div className="button-container">
+              <Button label="Remove from my list" value="delete"
+                onClick={() => props.onButtonClick(props._id)} />
+            </div>
+          </li>
          )}
     </div>
     /* <li className="contact" onClick={() => props.onContactClick(props._id)} >
