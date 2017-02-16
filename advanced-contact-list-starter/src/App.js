@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import ContactList from './ContactList';
 import SelectedContactList from './SelectedContactList';
-import SearchBar from './SearchBar';
+import SearchBar from './Components/SearchBar';
 import ContactForm from './ContactForm';
 import axios from 'axios';
+
 /* eslint max-len: [1, {"ignoreUrls": true}] */
 class App extends Component {
 
@@ -19,14 +20,14 @@ class App extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:4000/contacts')
+    axios.get('http://localhost:3001/contacts') // http://localhost:4000
     .then(resp => {
       this.setState({
         contacts: resp.data,
         globalContacts: resp.data
       });
-    });
-    // .catch(err => console.log(`Error! ${err}`));
+    })
+  .catch(err => console.log(`Error! ${err}`));
   }
   handleSearchBarChange(event) {
     this.setState({
@@ -59,7 +60,7 @@ class App extends Component {
   // console.log('did we fire?');
   }
   handleAddContact(attributes) {
-    axios.post('http://localhost:4000/contacts', attributes)
+    axios.post('http://localhost:3001/contacts', attributes)
       .then(resp => {
         this.setState({
           contacts: [...this.state.contacts, resp.data],
@@ -69,7 +70,7 @@ class App extends Component {
   //    .catch(err => console.log(err));
   }
   handleDeleteButtonClick(_id) {
-    axios.delete(`http://localhost:4000/contacts/${_id}`)
+    axios.delete(`http://localhost:3001/contacts/${_id}`)
       .then(resp => {
         const newContacts = this.state.contacts.filter(contact => contact._id !== _id);
 
